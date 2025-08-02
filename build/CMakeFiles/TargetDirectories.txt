@@ -1,0 +1,3 @@
+/home/vboxuser/Desktop/CppProject/ModernTaskManager/build/CMakeFiles/out.dir
+/home/vboxuser/Desktop/CppProject/ModernTaskManager/build/CMakeFiles/edit_cache.dir
+/home/vboxuser/Desktop/CppProject/ModernTaskManager/build/CMakeFiles/rebuild_cache.dir

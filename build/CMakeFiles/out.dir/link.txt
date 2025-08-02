@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/out.dir/src/main.cpp.o CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o CMakeFiles/out.dir/src/utils/LogTrace.cpp.o -o out 

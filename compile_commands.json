@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/build",
+  "command": "/usr/bin/c++  -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/proc -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/utils -std=gnu++17 -o CMakeFiles/out.dir/src/main.cpp.o -c /home/vboxuser/Desktop/CppProject/ModernTaskManager/src/main.cpp",
+  "file": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/src/main.cpp",
+  "output": "CMakeFiles/out.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/build",
+  "command": "/usr/bin/c++  -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/proc -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/utils -std=gnu++17 -o CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o -c /home/vboxuser/Desktop/CppProject/ModernTaskManager/src/proc/ProcessInfo.cpp",
+  "file": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/src/proc/ProcessInfo.cpp",
+  "output": "CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o"
+},
+{
+  "directory": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/build",
+  "command": "/usr/bin/c++  -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/proc -I/home/vboxuser/Desktop/CppProject/ModernTaskManager/include/utils -std=gnu++17 -o CMakeFiles/out.dir/src/utils/LogTrace.cpp.o -c /home/vboxuser/Desktop/CppProject/ModernTaskManager/src/utils/LogTrace.cpp",
+  "file": "/home/vboxuser/Desktop/CppProject/ModernTaskManager/src/utils/LogTrace.cpp",
+  "output": "CMakeFiles/out.dir/src/utils/LogTrace.cpp.o"
+}
+]
