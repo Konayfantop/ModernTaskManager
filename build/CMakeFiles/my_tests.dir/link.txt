@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/my_tests.dir/test/main.cpp.o CMakeFiles/my_tests.dir/test/proc/ProcessInfoTest.cpp.o CMakeFiles/my_tests.dir/src/proc/ProcessInfo.cpp.o -o my_tests  lib/libgtest.a lib/libgtest_main.a lib/libgtest.a 

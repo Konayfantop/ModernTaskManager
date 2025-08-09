@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <string>
+#include <math.h>
 #include <filesystem>
 
 // Sequence of number and their stats based on the number of appearence eg : 
@@ -76,10 +77,12 @@ struct PidStats
     // TODO: in C++20 use std::chrono and its' explicit members hh_mm_ss
     struct timezone
     {
-        uint8_t hours;
-        uint8_t minutes;
-        uint8_t seconds;
+        uint _hours;
+        uint _minutes;
+        uint _seconds;
+        uint _ms;
     };
+    struct timezone _timezone;
 };
 
 typedef std::unordered_map<uint, PidStats> PidStatus_t;
@@ -92,12 +95,28 @@ public:
 
     void readAndDisplayProcDir();
     std::string debugProcContent();
-private:
+    const std::filesystem::path& getOldPath();
+
+protected:
     uint getPidNum(const std::filesystem::directory_entry& entry);
     std::unordered_map<uint, std::string> fillStatMap(const std::filesystem::path& statDir);
+    double getGenericUptime(const std::filesystem::path& uptimePath);
+    double calculateCpu(const std::unordered_map<uint, std::string>& pidStat, const double& uptime);
+    double calculateMemory(const std::unordered_map<uint, std::string>& pidStat, const double meminfo);
+    void exportInFile();
+    double getMeminfo(const std::filesystem::path& meminfoPath);
+    PidStats::timezone calculateProcessUptime(const std::unordered_map<uint, std::string>& statMap, const double uptime);
+
+    inline std::string refineDouble(const double value)
+    {
+        return value < 1 ? 
+            "0." + std::to_string(static_cast<int>(value*100)) + "%" 
+            : std::to_string(static_cast<int>(value)) + "." + std::to_string(static_cast<int>((value - static_cast<int>(value))*100)) + "%";
+    }
 
 private:
     PidStatus_t _pidStatus;
+    std::filesystem::path _oldPath;
 };
 
 }

@@ -3,8 +3,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/out.dir/src/main.cpp.o.d"
   "CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o"
   "CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o.d"
-  "CMakeFiles/out.dir/src/utils/LogTrace.cpp.o"
-  "CMakeFiles/out.dir/src/utils/LogTrace.cpp.o.d"
   "out"
   "out.pdb"
 )

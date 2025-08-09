@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /home/vboxuser/Desktop/CppProject/ModernTaskManager/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
@@ -84,6 +94,51 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"gmock\" \"gtest\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -129,6 +184,71 @@ out/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/build
 .PHONY : out/fast
 
+#=============================================================================
+# Target rules for targets named my_tests
+
+# Build rule for target.
+my_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 my_tests
+.PHONY : my_tests
+
+# fast build rule for target.
+my_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/build
+.PHONY : my_tests/fast
+
+#=============================================================================
+# Target rules for targets named gmock
+
+# Build rule for target.
+gmock: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock
+.PHONY : gmock
+
+# fast build rule for target.
+gmock/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
+.PHONY : gmock/fast
+
+#=============================================================================
+# Target rules for targets named gmock_main
+
+# Build rule for target.
+gmock_main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock_main
+.PHONY : gmock_main
+
+# fast build rule for target.
+gmock_main/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+.PHONY : gmock_main/fast
+
+#=============================================================================
+# Target rules for targets named gtest
+
+# Build rule for target.
+gtest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest
+.PHONY : gtest
+
+# fast build rule for target.
+gtest/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build
+.PHONY : gtest/fast
+
+#=============================================================================
+# Target rules for targets named gtest_main
+
+# Build rule for target.
+gtest_main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest_main
+.PHONY : gtest_main
+
+# fast build rule for target.
+gtest_main/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
+.PHONY : gtest_main/fast
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -159,6 +279,7 @@ src/proc/ProcessInfo.o: src/proc/ProcessInfo.cpp.o
 # target to build an object file
 src/proc/ProcessInfo.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/proc/ProcessInfo.cpp.o
 .PHONY : src/proc/ProcessInfo.cpp.o
 
 src/proc/ProcessInfo.i: src/proc/ProcessInfo.cpp.i
@@ -167,6 +288,7 @@ src/proc/ProcessInfo.i: src/proc/ProcessInfo.cpp.i
 # target to preprocess a source file
 src/proc/ProcessInfo.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/proc/ProcessInfo.cpp.i
 .PHONY : src/proc/ProcessInfo.cpp.i
 
 src/proc/ProcessInfo.s: src/proc/ProcessInfo.cpp.s
@@ -175,31 +297,56 @@ src/proc/ProcessInfo.s: src/proc/ProcessInfo.cpp.s
 # target to generate assembly for a file
 src/proc/ProcessInfo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/proc/ProcessInfo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/proc/ProcessInfo.cpp.s
 .PHONY : src/proc/ProcessInfo.cpp.s
 
-src/utils/LogTrace.o: src/utils/LogTrace.cpp.o
-.PHONY : src/utils/LogTrace.o
+test/main.o: test/main.cpp.o
+.PHONY : test/main.o
 
 # target to build an object file
-src/utils/LogTrace.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/utils/LogTrace.cpp.o
-.PHONY : src/utils/LogTrace.cpp.o
+test/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/main.cpp.o
+.PHONY : test/main.cpp.o
 
-src/utils/LogTrace.i: src/utils/LogTrace.cpp.i
-.PHONY : src/utils/LogTrace.i
+test/main.i: test/main.cpp.i
+.PHONY : test/main.i
 
 # target to preprocess a source file
-src/utils/LogTrace.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/utils/LogTrace.cpp.i
-.PHONY : src/utils/LogTrace.cpp.i
+test/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/main.cpp.i
+.PHONY : test/main.cpp.i
 
-src/utils/LogTrace.s: src/utils/LogTrace.cpp.s
-.PHONY : src/utils/LogTrace.s
+test/main.s: test/main.cpp.s
+.PHONY : test/main.s
 
 # target to generate assembly for a file
-src/utils/LogTrace.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/src/utils/LogTrace.cpp.s
-.PHONY : src/utils/LogTrace.cpp.s
+test/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/main.cpp.s
+.PHONY : test/main.cpp.s
+
+test/proc/ProcessInfoTest.o: test/proc/ProcessInfoTest.cpp.o
+.PHONY : test/proc/ProcessInfoTest.o
+
+# target to build an object file
+test/proc/ProcessInfoTest.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/proc/ProcessInfoTest.cpp.o
+.PHONY : test/proc/ProcessInfoTest.cpp.o
+
+test/proc/ProcessInfoTest.i: test/proc/ProcessInfoTest.cpp.i
+.PHONY : test/proc/ProcessInfoTest.i
+
+# target to preprocess a source file
+test/proc/ProcessInfoTest.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/proc/ProcessInfoTest.cpp.i
+.PHONY : test/proc/ProcessInfoTest.cpp.i
+
+test/proc/ProcessInfoTest.s: test/proc/ProcessInfoTest.cpp.s
+.PHONY : test/proc/ProcessInfoTest.s
+
+# target to generate assembly for a file
+test/proc/ProcessInfoTest.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/test/proc/ProcessInfoTest.cpp.s
+.PHONY : test/proc/ProcessInfoTest.cpp.s
 
 # Help Target
 help:
@@ -208,7 +355,17 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... test"
+	@echo "... gmock"
+	@echo "... gmock_main"
+	@echo "... gtest"
+	@echo "... gtest_main"
+	@echo "... my_tests"
 	@echo "... out"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
@@ -216,9 +373,12 @@ help:
 	@echo "... src/proc/ProcessInfo.o"
 	@echo "... src/proc/ProcessInfo.i"
 	@echo "... src/proc/ProcessInfo.s"
-	@echo "... src/utils/LogTrace.o"
-	@echo "... src/utils/LogTrace.i"
-	@echo "... src/utils/LogTrace.s"
+	@echo "... test/main.o"
+	@echo "... test/main.i"
+	@echo "... test/main.s"
+	@echo "... test/proc/ProcessInfoTest.o"
+	@echo "... test/proc/ProcessInfoTest.i"
+	@echo "... test/proc/ProcessInfoTest.s"
 .PHONY : help
 
 
