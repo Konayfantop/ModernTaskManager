@@ -1,4 +1,6 @@
 #include <ProcessInfo.hpp>
+#include <Validator.hpp>
+#include <LogTrace.hpp>
 
 #include <iostream>
 
@@ -9,6 +11,10 @@ int main()
     proc::ProcessInfo aProcess;
     aProcess.readAndDisplayProcDir();
 
-    std::cout << "END" << std::endl;
+    if(!utils::validator::validateExportedFile(aProcess.getOldPath().parent_path() / "export/ProcessesStatus.txt"))
+    {
+        ERROR("Validation failed. Check your file for potential corruptions");
+    }
+
     return 0;
 }

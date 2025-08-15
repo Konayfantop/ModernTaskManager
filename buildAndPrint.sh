@@ -1,5 +1,32 @@
 #!/usr/bin/bash
 
+declare -A utilityBasedOnInput
+utilityBasedOnInput["shared_debug"]="cmake -DCMAKE_BUILD_TYPE=Debug ."
+utilityBasedOnInput["shared_release"]="cmake -DCMAKE_BUILD_TYPE=Release ."
+utilityBasedOnInput["test"]=compileAndRunUnittests
+utilityBasedOnInput["unittest"]=compileAndRunUnittests
+utilityBasedOnInput["regression"]="make VERBOSE=1; ./out"
+
+function compileAndRunUnittests () {
+    echo -e "\e[${GREEN}m [INFO]: Initializing and running unit-tests \e[${RESET}m"
+    cmake -DBUILD_TESTING=ON ..
+    make VERBOSE=1
+
+    ctest --verbose
+}
+
+# TODO: Check if there is a clever way to exclude test and regression in the same time or debug and release in the same time
+function determineCompileCommand () {
+    for arg in "$@"; do
+        if [ -n "${utilityBasedOnInput["$arg"]}" ]; then
+            eval "${utilityBasedOnInput["$arg"]}"
+        else
+            echo -e "\e[${RED}m [ERROR]: The flag given doesn't exist. Type help for insight. Ending... \e[${RESET}m"
+            exit;
+        fi
+    done
+}
+
 GREEN='0;32' # for normal print
 YELLOW='0;33' # for warnings
 RED='0;31' # for errors
@@ -18,22 +45,14 @@ mkdir build && cd build
 # for exporting compilation flags used to parse by Clangd (for staging and indexing)
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
-# # -g for Debug or -O3 for release modes
-# if [ "$1" == "-g" ]; then
-#     cmake -DCMAKE_BUILD_TYPE=Debug .
-# else
-#     cmake -DCMAKE_BUILD_TYPE=Release .
-
-if [ "$1" == "test" ]; then
-    echo -e "\e[${GREEN}m [INFO]: Initializing and running unit-tests \e[${RESET}m"
-    cmake -DBUILD_TESTING=ON ..
-    make VERBOSE=1
-
-    ctest --verbose
+if [ "$#" -gt 2 ]; then
+    echo -e "\e[${RED}m [ERROR]: For the moment no more than 2 commands are supported. Type help for insight. Ending... \e[${reset}m"
+    exit
+elif [ "$#" -eq 0 ]; then
+    determineCompileCommand "shared_debug" "out"
 else
-    make VERBOSE=1
-
-    ./out
+    echo -e "\e[${GREEN}m [INFO]: XYN_2 \e[${RESET}m"
+    determineCompileCommand "$@"
 fi
 
 # little bit of info during compilation never hurt anyone

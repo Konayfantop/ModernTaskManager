@@ -9,6 +9,7 @@ static constexpr char YELLOW[] = "1;33m";
 static constexpr char MAGENTA[] = "1;35m";
 static constexpr char CYAN[] = "1;36m";
 static constexpr char RESET[] = "0m";
+static constexpr char WHITE[] = "1;37m";
 
 namespace
 {
@@ -50,6 +51,16 @@ namespace
 
 #define NOTIFY(log) \
     __LOGGING__(log, CYAN);
+
+#if defined(SHARED_DEBUG)
+  // forward to your logging routine; accepts any args you want to forward
+    #define DEBUG(log) \
+        __LOGGING__(log, WHITE)
+#else
+  // release: no-op, compiles away cleanly
+    #define DEBUG(log) \
+        //nothing
+#endif
 
 namespace utils
 {

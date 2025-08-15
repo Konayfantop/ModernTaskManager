@@ -1,12 +1,45 @@
 #include "LogTrace.hpp"
+#include "gtest/gtest.h"
 #include <ProcessInfo.hpp>
 #include <filesystem>
+#include <fstream>
 #include <gtest/gtest.h>
 #include <Exception.hpp>
+#include <string>
 #include <unordered_map>
 
 namespace proc
 {
+
+#define ASSERT_EQ_FILES(filePath1, filePath2) \
+{ \
+    std::ifstream file1(filePath1); \
+    std::ifstream file2(filePath2); \
+    if(!file1 || !file2) \
+    { \
+        GTEST_FATAL_FAILURE_("ProcessesStatus.txt couldn't open or there is a technical error on opening "); \
+    } \
+    std::string line1, line2; \
+    while(1) \
+    { \
+        bool readSucceeded1 = static_cast<bool>(std::getline(file1, line1)); \
+        bool readSucceeded2 = static_cast<bool>(std::getline(file2, line2)); \
+        if(!readSucceeded1 && !readSucceeded2) \
+        { \
+            SUCCEED(); \
+            break; \
+        } \
+        if((readSucceeded1 && !readSucceeded2) || (!readSucceeded1 && readSucceeded2)) \
+        { \
+            FAIL() << "One of the files have more lines to give, therefore this fact makes them unequal"; \
+        } \
+        \
+        if(line1 != line2) \
+        { \
+            FAIL() << "Difference between file lines"; \
+        } \
+    } \
+}
 
 class ProcessInfoAccessor : public ProcessInfo
 {
@@ -20,6 +53,9 @@ public:
     using ProcessInfo::calculateMemory;
     using ProcessInfo::calculateProcessUptime;
     using ProcessInfo::exportInFile;
+    using ProcessInfo::getOldPath;
+    using ProcessInfo::accessOldPath;
+    using ProcessInfo::accessPidStatus;
 };
 
 class ProcessInfoTest : public ::testing::Test
@@ -219,10 +255,33 @@ TEST_F(ProcessInfoTest, checkCalculateProcessUptime_calculatedOk)
     EXPECT_EQ(280, timezone._ms);
 }
 
-TEST_F(ProcessInfoTest, checkTheWholeProcess_readAndDisplayProcDir_outcomeOk)
+TEST_F(ProcessInfoTest, checkExportInFile_exportingManyPidInfo_Ok)
 {
     std::filesystem::current_path(setTestingPath());
-    processInfoAccessor.readAndDisplayProcDir();
+
+    proc::PidStatus_t& pidStatus = processInfoAccessor.accessPidStatus();
+    proc::PidStats stats;
+    
+    stats._cpu = 0.123456;
+    stats._memory = 0.654321;
+    stats._threads = 50;
+    stats._timezone._hours = 2;
+    stats._timezone._minutes = 54;
+    stats._timezone._seconds = 34;
+    stats._timezone._ms = 180;
+
+    for(int i=0; i<200; ++i)
+    {
+        pidStatus[i] = stats;
+    }
+
+    processInfoAccessor.accessOldPath() = std::filesystem::current_path();
+    processInfoAccessor.exportInFile();
+
+    ASSERT_EQ_FILES(
+        std::filesystem::path(processInfoAccessor.accessOldPath().parent_path() / "export/ProcessesStatus.txt"),
+        std::filesystem::path(processInfoAccessor.accessOldPath().parent_path() / "export/ProcessesStatusToCompare.txt")
+    );
 }
 
 }

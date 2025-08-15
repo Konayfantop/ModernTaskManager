@@ -31,8 +31,6 @@ ProcessInfo::ProcessInfo()
     NOTIFY("Current path : " << std::filesystem::current_path());
 }
 
-const std::filesystem::path& ProcessInfo::getOldPath() { return _oldPath; }
-
 // the path entry is "/proc/xxxx" DONE
 uint ProcessInfo::getPidNum(const std::filesystem::directory_entry& entry)
 {
@@ -159,6 +157,17 @@ PidStats::timezone ProcessInfo::calculateProcessUptime(const std::unordered_map<
     processTimezone._seconds = secondsRemaining; // on-purpose truncating the decimal  as we want integer seconds
     processTimezone._ms = std::round((secondsRemaining - processTimezone._seconds) * 1000); // it's ok if we take at least a 3-digit ms
 
+    // if the time has even 0ms after calculation, the pids may be either workers from kernel or zombie processes :
+    // 1) workers : they exist in /proc/ but they never occupy anything and they are lost in an instant
+    // 2) zombie pids : they have finished executing and they are terminated but they still occupy a pid entry
+    if(processTimezone._hours == processTimezone._minutes
+        && processTimezone._minutes == processTimezone._seconds
+        && processTimezone._seconds == processTimezone._ms
+        && processTimezone._ms == 0)
+    {
+        throw utils::SeverityException<utils::HarmlessException>("Worker or Zombie process, all the metrics will be fake");
+    }
+
     return processTimezone;
 }
 
@@ -179,26 +188,26 @@ double ProcessInfo::getGenericUptime(const std::filesystem::path& uptimePath)
     return std::stod(singleLine.substr(0, separatorIndex));
 }
 
+// DONE
 void ProcessInfo::exportInFile()
 {
-    std::filesystem::path projectPathFileExport = _oldPath;
-    std::system("mkdir export");
-    std::system("cd export");
-    projectPathFileExport = "/ProcessesStatus.txt";
+    std::filesystem::path projectPathFileExport = _oldPath.parent_path() / "export/ProcessesStatus.txt";
 
-    INFO("Exporting process data in a file called: ProcessesStatus.txt");
+    INFO("Exporting process data in a file called: ProcessesStatus.txt" << projectPathFileExport);
 
-    std::fstream processesStatus(projectPathFileExport);
-    processesStatus.open("");
+    std::ofstream processesStatus(projectPathFileExport);
+    if(!processesStatus)
+    {
+        throw utils::SeverityException<utils::SeriousException>("ERROR: Cannot open the file to export Pid statuses");
+    }
+
     std::ostringstream ss;
-
     for(const auto& [pidNum, stats] : _pidStatus)
     {
-        ss << "Pid: " << pidNum << " cpu: " << stats._cpu << " memory: " << stats._memory << " threads: " << stats._threads << " time: " << 
+        ss << "Pid: " << pidNum << " cpu: " << refineDouble(stats._cpu) << " memory: " << refineDouble(stats._memory) << " threads: " << stats._threads << " time: " << 
             stats._timezone._hours << ":" << stats._timezone._minutes << ":" << stats._timezone._seconds << "." << stats._timezone._ms << std::endl;
-        processesStatus << ss.str();
-        ss.clear();
     }
+    processesStatus << ss.str();
 
     processesStatus.close();
 }

@@ -95,7 +95,7 @@ public:
 
     void readAndDisplayProcDir();
     std::string debugProcContent();
-    const std::filesystem::path& getOldPath();
+    inline const std::filesystem::path& getOldPath(){ return _oldPath; }
 
 protected:
     uint getPidNum(const std::filesystem::directory_entry& entry);
@@ -106,6 +106,10 @@ protected:
     void exportInFile();
     double getMeminfo(const std::filesystem::path& meminfoPath);
     PidStats::timezone calculateProcessUptime(const std::unordered_map<uint, std::string>& statMap, const double uptime);
+    
+    inline PidStatus_t& accessPidStatus(){ return _pidStatus; }
+    inline const PidStatus_t& getPidStatus() { return _pidStatus; } 
+    inline std::filesystem::path& accessOldPath(){ return _oldPath; }
 
     inline std::string refineDouble(const double value)
     {
