@@ -51,7 +51,6 @@ if [ "$#" -gt 2 ]; then
 elif [ "$#" -eq 0 ]; then
     determineCompileCommand "shared_debug" "out"
 else
-    echo -e "\e[${GREEN}m [INFO]: XYN_2 \e[${RESET}m"
     determineCompileCommand "$@"
 fi
 

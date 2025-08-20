@@ -15,6 +15,8 @@ add_executable(out
     src/main.cpp
     src/proc/ProcessInfo.cpp
     src/utils/Validator.cpp
+    src/proc/Cli.cpp
+    src/proc/ExportedFileWrapper.cpp
 )
 
 # This matches your working include path
@@ -37,12 +39,14 @@ if(BUILD_TESTING)
         test/main.cpp
         test/proc/ProcessInfoTest.cpp
         test/utils/ValidatorTest.cpp
+        test/proc/ExportedFileWrapperTest.cpp
     )
 
     add_executable(my_tests ${TEST_SOURCES})
 
     target_sources(my_tests PRIVATE src/proc/ProcessInfo.cpp)
     target_sources(my_tests PRIVATE src/utils/Validator.cpp)
+    target_sources(my_tests PRIVATE src/proc/ExportedFileWrapper.cpp)
 
     target_include_directories(my_tests PRIVATE ${CMAKE_SOURCE_DIR}/include/proc)
     target_include_directories(my_tests PRIVATE ${CMAKE_SOURCE_DIR}/include/utils)

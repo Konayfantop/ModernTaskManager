@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdint>
 #include <unordered_map>
 #include <string>
 #include <math.h>
@@ -63,7 +62,7 @@
 // | 49 | `arg_end`               | Address of command line end                      |
 // | 50 | `env_start`             | Address of environment start                     |
 // | 51 | `env_end`               | Address of environment end                       |
-// | 52 | `exit_code`             | Exit status (if process is a zombie)             |
+// | 52 | `exit_code`             | Exit status (if process is a zombie)             | TODO: Identify the zombie process by this and not by time == 0
 
 namespace proc
 {

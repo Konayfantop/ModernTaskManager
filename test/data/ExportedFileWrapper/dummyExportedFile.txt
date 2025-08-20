@@ -1,0 +1,11 @@
+Pid: 15386 cpu: 4.58% memory: 1.55% threads: 11 time: 0:0:2.400
+Pid: 15345 cpu: 0.0% memory: 0.4% threads: 1 time: 0:0:2.620
+Pid: 14579 cpu: 0.7% memory: 0.0% threads: 1 time: 0:5:44.80
+Pid: 14500 cpu: 0.0% memory: 0.0% threads: 1 time: 0:5:49.400
+Pid: 14270 cpu: 0.4% memory: 0.0% threads: 1 time: 0:6:7.770
+Pid: 11406 cpu: 0.79% memory: 0.0% threads: 1 time: 0:16:8.310
+Pid: 11228 cpu: 0.0% memory: 0.0% threads: 1 time: 0:18:39.870
+Pid: 9656 cpu: 0.0% memory: 0.0% threads: 1 time: 0:28:11.450
+Pid: 8204 cpu: 0.4% memory: 0.4% threads: 1 time: 0:35:43.220
+Pid: 7751 cpu: 0.0% memory: 0.0% threads: 1 time: 0:36:54.520
+Pid: 3965 cpu: 0.29% memory: 3.49% threads: 10 time: 0:52:52.510
